@@ -1,0 +1,29 @@
+<% layout('layouts/boilerplate') %>
+<body>
+    <div class="container mt-5"></div>
+        <h1 class="mb-4 text-center text-warning"><span class="badge text-bg-secondary">Add Review</span></h1>
+        <form action="/review" method="post" class="shadow p-4 rounded bg-dark needs-validation" novalidate>
+            <div class="mb-3">
+                <input type="hidden" name="listId" value="<%= list._id %>">
+                <label for="rating" class="form-label text-light">Rating:</label>
+                <select class="form-select" id="rating" name="rating" required>
+                    <option value="" disabled selected>Select a rating</option>
+                    <option value="1">1 - Poor</option>
+                    <option value="2">2 - Fair</option>
+                    <option value="3">3 - Good</option>
+                    <option value="4">4 - Very Good</option>
+                    <option value="5">5 - Excellent</option>
+                </select>
+                <div class="invalid-feedback">Please select a rating</div>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label text-light">Description:</label>
+                <textarea class="form-control" id="description" name="comment" rows="4" placeholder='Enter desription for <%= list.title %> place' required></textarea>
+                <div class="invalid-feedback">Please enter a description</div>
+            </div>
+            <div class="text-center m-2">
+                <button type="submit" class="btn btn-outline-success">Add Review</button>
+            </div>
+        </form>
+    </div>
+</body>

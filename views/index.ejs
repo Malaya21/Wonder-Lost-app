@@ -1,0 +1,21 @@
+<% layout('layouts/boilerplate') %>
+<style>
+  
+</style>
+<body>
+
+<div class="container">
+    <ul>
+        <% lists.forEach(element => {%>
+        <li class="card">
+            <img src="<%= element.image %>" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title"><%= element.title %></h5>
+                <p class="card-text">Price : &#8377;<%= element.price %></p>
+                <a href="/listing/<%=element._id%>" class="btn btn-primary">Details</a>
+            </div>
+        </li>
+        <%}); %>
+    </ul>
+</div>
+</body>

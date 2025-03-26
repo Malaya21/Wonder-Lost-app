@@ -1,0 +1,37 @@
+<% layout('layouts/boilerplate') %>
+<body>
+    <div class="container mt-3">
+        <h1 class="mb-4 text-center">
+            <span class="badge text-bg-secondary">Add a New Listing</span></h1>
+        <form action="/listing"  method="post" class="shadow p-4 rounded bg-dark needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="title" class="form-label">Title:</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Enter your title here" required>
+                <div class="invalid-feedback">Please enter a valid title</div>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Image URL:</label>
+                <input type="text" class="form-control" id="image" name="image" placeholder="Enter image URL here" required>
+                <div class="invalid-feedback">Please enter a valid image</div>
+            </div>
+            <div class="mb-3">
+                <label for="price" class="form-label">Price:</label>
+                <input type="number" class="form-control" id="price" name="price" placeholder="Enter price here" required>
+                <div class="invalid-feedback">Please enter a valid price</div>
+            </div>
+            <div class="mb-3">
+                <label for="location" class="form-label">Location:</label>
+                <input type="text" class="form-control" id="location" name="location" placeholder="Enter location here" required>
+                <div class="invalid-feedback">Please enter a valid Location</div>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description:</label>
+                <textarea class="form-control" id="description" name="description" placeholder="Enter description here" rows="4" required></textarea>
+                <div class="invalid-feedback">Please enter a valid Description</div>
+            </div>
+            <div class="text-center m-2">
+                <button type="submit" class="btn btn-outline-success">Upload</button>
+            </div>
+        </form>
+    </div>
+</body>
