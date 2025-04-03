@@ -19,8 +19,24 @@
             <button type="submit" class="btn btn-danger">Delete</button>
         </form>
     </div>
-    <div class="col-8">
+    <hr>
+    <div class="col-12 ml-5 p-5">
         <h4 class="text-center">All Reviews </h4>
+        
+        <% if (list.reviews && list.reviews.length > 0) { %>
+            <div class="d-flex flex-wrap">
+            <% list.reviews.forEach(review => { %>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted"><%= review.rating %></h6>
+                        <p class="card-text"><%= review.comment %></p>
+                    </div>
+                </div>
+            <% }); %>
+            </div>
+        <% } else { %>
+            <p>No reviews yet.</p>
+        <% } %>
         
             
         

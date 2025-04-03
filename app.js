@@ -41,11 +41,12 @@ const validateListing = (req, res, next) => {
 };
 //Middleware to validate reviews schema
 const validateReviews = (req,resp,next)=>{
-    
-    const {error} = reviewSchemaJoi.validate(req.body)    
-    if(error)
-    {
-        
+    const {comment,rating} = req.body
+    const {error} = reviewSchemaJoi.validate({comment,rating} )    
+    if (error) {
+        throw new ExpressError(400, error); // Throwing custom error if validation fails
+    } else {
+        next(); // Proceeding to the next middleware or route handler
     }
 }
 
@@ -74,7 +75,8 @@ app.post(
         res.redirect('/listing'); // Redirecting to the listings page
     })
 );
-app.post('/review', WrapAsync(async (req, res) => {
+app.post('/review',validateReviews,
+    WrapAsync(async (req, res) => {
     const { listId, rating, comment } = req.body;
 
     // Create and save the new review
@@ -132,8 +134,10 @@ app.get(
     '/listing/:id',
     WrapAsync(async (req, resp) => {
         const { id } = req.params; // Extracting listing ID from URL parameters
-        const list = await Listing.findById(id); // Fetching the listing by ID
+        const list = await Listing.findById(id).populate('reviews'); // Fetching the listing by ID and populating reviews
+    
         resp.render('details', { list }); // Rendering the details page with listing data
+        
     })
 );
 app.get(
