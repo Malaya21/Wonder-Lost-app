@@ -2,12 +2,12 @@
 <body>
     <div class="container mt-5"></div>
         <h1 class="mb-4 text-center text-warning"><span class="badge text-bg-secondary">Add Review</span></h1>
-        <form action="/listing/review" method="post" class="shadow p-4 rounded bg-dark needs-validation" novalidate>
+        <form action="/listing/review/<%=review._id%>?_method=put" method="post" class="shadow p-4 rounded bg-dark needs-validation" novalidate>
             <div class="mb-3">
-                <input type="hidden" name="listId" value="<%= list._id %>">
+                <input type="hidden" name="listId" value="<%= listId %>">
                 <label for="rating" class="form-label text-light">Rating:</label>
                 <select class="form-select" id="rating" name="rating" required>
-                    <option value="" disabled selected>Select a rating</option>
+                    <option value="><%= review.rating %>" disabled selected><%= review.rating %></option>
                     <option value="1">1 - Poor</option>
                     <option value="2">2 - Fair</option>
                     <option value="3">3 - Good</option>
@@ -18,7 +18,7 @@
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label text-light">Description:</label>
-                <textarea class="form-control" id="description" name="comment" rows="4" placeholder='Enter desription for <%= list.title %> place' required></textarea>
+                <textarea class="form-control" id="description" name="comment" rows="4" required><%= review.comment %></textarea>
                 <div class="invalid-feedback">Please enter a description</div>
             </div>
             <div class="text-center m-2">

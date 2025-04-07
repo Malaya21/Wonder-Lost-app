@@ -1,0 +1,18 @@
+<div class="container">
+<% if (error && error.length) { %>
+  <div id="error-alert" class="alert alert-danger alert-dismissible fade show col-6 offset-3" role="alert">
+    <%= error %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+</div>
+<script>
+  setTimeout(() => {
+    const alert = document.getElementById('error-alert');
+    if (alert) {
+      // Bootstrap 5 way to hide/dismiss the alert
+      const bsAlert = new bootstrap.Alert(alert);
+      bsAlert.close();
+    }
+  }, 3000); // Dismiss after 3 seconds
+</script> 

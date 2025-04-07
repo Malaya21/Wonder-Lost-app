@@ -9,6 +9,10 @@ const reviewsSchema = new Schema({
         min: 1,
         max: 5,
     },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    },
     createdAt: {
         type: Date,
         default: Date.now,

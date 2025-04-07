@@ -10,10 +10,10 @@ const listingSchema = joi.object({
    
 });
 
-module.exports = listingSchema;
+
 
 const reviewSchemaJoi  = joi.object({
         rating:joi.number().required().min(1).max(5),
         comment:joi.string().required()
 }) 
-module.exports = reviewSchemaJoi;
+module.exports = {reviewSchemaJoi,listingSchema};

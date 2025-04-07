@@ -69,11 +69,23 @@ const sampleListings = [
 
 connect().then(async () => {
     try {
-        await Listing.insertMany(sampleListings);
-        console.log('Sample listings inserted successfully');
+      const sampleData = sampleListings.map(listing => ({
+        ...listing,
+        owner: '67f336e0064182611796cd57'
+      }));
+      await Listing.insertMany(sampleData);
+      console.log('Sample listings inserted successfully');
     } catch (error) {
         console.error('Error inserting sample listings:', error);
     } finally {
         process.exit();
     }
 });
+// connect().then(async () => {
+//     try {
+//         await Listing.deleteMany({});
+//         console.log('All listings deleted successfully');
+//     } catch (error) {
+//         console.error('Error deleting listings:', error);
+//     } 
+// });
