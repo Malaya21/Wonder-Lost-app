@@ -1,0 +1,27 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="details-container">
+    <!-- Hero Image Section -->
+    <div class="hero-section">
+        <div class="hero-image">
+            <img src="/uploads/<%=listing.image.filename %>" alt="<%=listing.title %>" class="hero-img" />
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1 class="hero-title"><%=listing.title %></h1>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-user"></i>
+                        <span><%=listing.owner.username %></span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-tag"></i>
+                        <span>₹<%=listing.price %>/night</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rest of the template remains the same -->
+    // ... existing code ...
+</div> 
