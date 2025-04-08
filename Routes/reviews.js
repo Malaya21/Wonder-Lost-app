@@ -34,12 +34,11 @@ router.post('/', validateReviews,
         );
 
         if (!updatedListing) {
-            console.log("Error: Listing not found");
+           
             return res.status(404).send("Listing not found");
         }
 
-        console.log("New Review Added:", newReview);
-        console.log("Updated listing:", updatedListing);
+       
         req.flash("success", "Reviews added successfully");
         res.redirect(`/listing/${listId}`); // Redirecting to the listings page
     }));
@@ -69,7 +68,7 @@ router.put(
         
         const { comment, rating, listId } = req.body;
         const review = await Review.findByIdAndUpdate(id, { comment, rating ,createdAt:Date.now()}, { new: true, runValidators: true });
-        console.log(listId);
+       
         req.flash("success","Review updated successfully");
         resp.redirect(`/listing/${listId}`);
     })

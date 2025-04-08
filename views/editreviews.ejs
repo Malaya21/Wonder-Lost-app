@@ -1,29 +1,298 @@
 <% layout('layouts/boilerplate') %>
-<body>
-    <div class="container mt-5"></div>
-        <h1 class="mb-4 text-center text-warning"><span class="badge text-bg-secondary">Add Review</span></h1>
-        <form action="/listing/review/<%=review._id%>?_method=put" method="post" class="shadow p-4 rounded bg-dark needs-validation" novalidate>
-            <div class="mb-3">
+
+<div class="review-container">
+    <div class="review-wrapper">
+        <div class="review-card">
+            <div class="review-header">
+                <h1 class="review-title">
+                    <i class="fas fa-star me-2"></i>Edit Review
+                </h1>
+                <p class="review-subtitle">Update your review</p>
+            </div>
+
+            <form action="/listing/review/<%=review._id%>?_method=put" method="post" class="review-form needs-validation" novalidate>
                 <input type="hidden" name="listId" value="<%= listId %>">
-                <label for="rating" class="form-label text-light">Rating:</label>
-                <select class="form-select" id="rating" name="rating" required>
-                    <option value="><%= review.rating %>" disabled selected><%= review.rating %></option>
-                    <option value="1">1 - Poor</option>
-                    <option value="2">2 - Fair</option>
-                    <option value="3">3 - Good</option>
-                    <option value="4">4 - Very Good</option>
-                    <option value="5">5 - Excellent</option>
-                </select>
-                <div class="invalid-feedback">Please select a rating</div>
-            </div>
-            <div class="mb-3">
-                <label for="description" class="form-label text-light">Description:</label>
-                <textarea class="form-control" id="description" name="comment" rows="4" required><%= review.comment %></textarea>
-                <div class="invalid-feedback">Please enter a description</div>
-            </div>
-            <div class="text-center m-2">
-                <button type="submit" class="btn btn-outline-success">Add Review</button>
-            </div>
-        </form>
+                
+                <div class="form-group">
+                    <label for="rating" class="form-label">
+                        <i class="fas fa-star me-2"></i>Rating
+                    </label>
+                    <div class="rating-select">
+                        <select class="form-select" id="rating" name="rating" required>
+                            <option value="" disabled>Select a rating</option>
+                            <option value="1" <%= review.rating == 1 ? 'selected' : '' %>>1 - Poor</option>
+                            <option value="2" <%= review.rating == 2 ? 'selected' : '' %>>2 - Fair</option>
+                            <option value="3" <%= review.rating == 3 ? 'selected' : '' %>>3 - Good</option>
+                            <option value="4" <%= review.rating == 4 ? 'selected' : '' %>>4 - Very Good</option>
+                            <option value="5" <%= review.rating == 5 ? 'selected' : '' %>>5 - Excellent</option>
+                        </select>
+                        <div class="rating-stars">
+                            <% for(let i = 1; i <= 5; i++) { %>
+                                <i class="<%= i <= review.rating ? 'fas' : 'far' %> fa-star star-icon" data-value="<%= i %>"></i>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="invalid-feedback">Please select a rating</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description" class="form-label">
+                        <i class="fas fa-comment me-2"></i>Description
+                    </label>
+                    <textarea class="form-control" id="description" name="comment" rows="4" 
+                        placeholder="Share your updated experience..." required><%= review.comment %></textarea>
+                    <div class="invalid-feedback">Please enter a description</div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Update Review
+                    </button>
+                    <a href="/listing/<%= listId %>" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-</body>
+</div>
+
+<style>
+    .review-container {
+        min-height: 100vh;
+        padding: 2rem 0;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .review-wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .review-card {
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+    }
+
+    .review-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .review-title {
+        font-size: 2rem;
+        color: #2d3748;
+        margin-bottom: 0.5rem;
+    }
+
+    .review-subtitle {
+        color: #718096;
+        font-size: 1.1rem;
+    }
+
+    .review-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-label i {
+        color: #667eea;
+    }
+
+    .rating-select {
+        position: relative;
+    }
+
+    .form-select {
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        border: 2px solid #e2e8f0;
+        background-color: white;
+        transition: all 0.3s ease;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23667eea' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 16px 12px;
+    }
+
+    .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .rating-stars {
+        position: absolute;
+        top: 50%;
+        right: 2.5rem;
+        transform: translateY(-50%);
+        display: flex;
+        gap: 0.25rem;
+        pointer-events: none;
+    }
+
+    .star-icon {
+        color: #e2e8f0;
+        font-size: 1.2rem;
+    }
+
+    .star-icon.fas {
+        color: #f6ad55;
+    }
+
+    .form-control {
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        border: 2px solid #e2e8f0;
+        background-color: white;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        margin-top: 2rem;
+    }
+
+    .btn-primary {
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        border-radius: 0.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-outline-secondary {
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #e2e8f0;
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 576px) {
+        .review-card {
+            padding: 1.5rem;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn-primary, .btn-outline-secondary {
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+    // Form validation
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+
+    // Star rating interaction
+    document.addEventListener('DOMContentLoaded', function() {
+        const ratingSelect = document.getElementById('rating');
+        const stars = document.querySelectorAll('.star-icon');
+        
+        // Update stars when select changes
+        ratingSelect.addEventListener('change', function(e) {
+            e.stopPropagation(); // Prevent event bubbling
+            const value = parseInt(this.value);
+            updateStars(value);
+        });
+
+        // Click on stars to select rating
+        stars.forEach(star => {
+            star.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent event bubbling
+                const value = this.getAttribute('data-value');
+                ratingSelect.value = value;
+                updateStars(value);
+            });
+        });
+
+        // Hover effect for stars
+        stars.forEach(star => {
+            star.addEventListener('mouseover', function(e) {
+                e.stopPropagation(); // Prevent event bubbling
+                const value = this.getAttribute('data-value');
+                updateStars(value, true);
+            });
+
+            star.addEventListener('mouseout', function(e) {
+                e.stopPropagation(); // Prevent event bubbling
+                const currentValue = ratingSelect.value || 0;
+                updateStars(currentValue);
+            });
+        });
+
+        // Function to update star appearance
+        function updateStars(value, isHover = false) {
+            stars.forEach((star, index) => {
+                if (index < value) {
+                    star.classList.remove('far');
+                    star.classList.add('fas');
+                    star.style.color = isHover ? '#f6ad55' : '#f6ad55';
+                } else {
+                    star.classList.remove('fas');
+                    star.classList.add('far');
+                    star.style.color = isHover ? '#e2e8f0' : '#e2e8f0';
+                }
+            });
+        }
+
+        // Initialize stars with current rating
+        updateStars(parseInt(ratingSelect.value) || 0);
+    });
+</script>

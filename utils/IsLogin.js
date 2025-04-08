@@ -15,12 +15,15 @@ const saveRedirectUrl = (req, res, next) => {
     next();
 };
 const isOwner = async(req, res, next) => {
-    const {id} = req.params;
+    const {id} = req.body;
     const listing = await Listing.findById(id);
     if(listing.owner._id.toString() !== req.user._id.toString()){
         req.flash('error', 'You are not authorized to access this page');
         return res.redirect('/listing');
     }
+  
+    
+   
     
     next();
 };

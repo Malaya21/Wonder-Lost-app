@@ -7,6 +7,9 @@ const {listingSchema} = require("../joiSchema");
 const WrapAsync = require("../utils/WrapAsync");
 const ExpressError = require("../utils/ExpresssError");
 const { isLogin, isOwner } = require("../utils/IsLogin");
+const multer = require("multer");
+const {storage} = require("../cloudnary");
+const upload = multer({ storage });
 
 // Middleware to validate listing data using Joi schema
 const validateListing = (req, res, next) => {
@@ -35,29 +38,37 @@ router.get("/new",isLogin, (req, res) => {
 
 // Route to create a new listing
 router.post(
-    "/",
+    "/",isLogin,
+    upload.single("image"),
     validateListing,
     WrapAsync(async (req, res, next) => {
         const list = new Listing(req.body); // Creating a new listing from request body
         list.owner = req.user._id;
+       const path = req.file.path;
+      
+       
+       list.image = path;
          await list.save(); // Saving the listing to the database
        req.flash("success", "Listing created successfully"); // Flash message for success
         res.redirect("/listing"); // Redirecting to the listings page
     })
 );
 
+
+
+
 // Route to update an existing listing
 router.put(
     "/",isLogin,isOwner,
     WrapAsync(async (req, res) => {
         const { id, title, description, image, location, price } = req.body; // Extracting data from request body
-        console.log(id, title, description, image, location, price);
+        
         const list = await Listing.findByIdAndUpdate(
             id,
             { title, description, image, location, price },
             { new: true, runValidators: true } // Ensuring validation and returning updated document
         );
-        console.log(list);
+        
         req.flash("success", "Listing Updated successfully!");
         res.redirect(`/listing/${id}`); // Redirecting to the listings page
     })
@@ -66,7 +77,7 @@ router.put(
 
 // Route to render the edit form for a specific listing
 router.get(
-    "/:id/edit",isLogin,isOwner,
+    "/:id/edit",isLogin,
     WrapAsync(async (req, res) => {
         const { id } = req.params; // Extracting listing ID from URL parameters
         const list = await Listing.findById(id); // Fetching the listing by ID
@@ -81,7 +92,7 @@ router.get(
     WrapAsync(async (req, resp) => {
         const { id } = req.params; // Extracting listing ID from URL parameters
         const list = await Listing.findById(id).populate({path:"reviews",populate:{path:"owner"}}).populate("owner"); // Fetching the listing by ID and populating reviews
-        console.log(list);
+        
         
 
         resp.render("details", { list }); // Rendering the details page with listing data
@@ -94,7 +105,7 @@ router.delete(
     WrapAsync(async (req, res) => {
         const { id } = req.body; // Extracting listing ID from request body
         const data = await Listing.findByIdAndDelete(id); // Deleting the listing by ID
-        console.log(data);
+       
         req.flash("success", "Listing Deleted successfully");
         res.redirect("/listing"); // Redirecting to the listings page
     })

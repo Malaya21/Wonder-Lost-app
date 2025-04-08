@@ -11,7 +11,7 @@
                 <p class="text-center text-muted">Share your amazing place with the world</p>
             </div>
 
-            <form action="/listing" method="post" class="listing-form needs-validation" novalidate>
+            <form action="/listing" method="post" enctype="multipart/form-data" class="listing-form needs-validation" novalidate>
                 <div class="form-group">
                     <label for="title" class="form-label">
                         <i class="fas fa-heading me-2"></i>Title
@@ -25,11 +25,14 @@
 
                 <div class="form-group">
                     <label for="image" class="form-label">
-                        <i class="fas fa-image me-2"></i>Image URL
+                        <i class="fas fa-image me-2"></i>Upload Image
                     </label>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="image" name="image" 
-                               placeholder="Enter image URL here" required>
+                        <input type="file" class="form-control custom-file-input" id="image" name="image" 
+                               placeholder="Upload your image here" required>
+                        <label class="input-group-text" for="image">
+                            <i class="fas fa-cloud-upload-alt me-2"></i>Choose file
+                        </label>
                     </div>
                     <div class="invalid-feedback">Please enter a valid image URL</div>
                 </div>
@@ -55,6 +58,16 @@
                                placeholder="Enter location here" required>
                     </div>
                     <div class="invalid-feedback">Please enter a valid location</div>
+                </div>
+                <div class="form-group">
+                    <label for="country" class="form-label">
+                        <i class="fas fa-globe me-2"></i>Country
+                    </label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="country" name="country" 
+                               placeholder="Enter country here" required>
+                    </div>
+                    <div class="invalid-feedback">Please enter a valid country</div>
                 </div>
 
                 <div class="form-group">
