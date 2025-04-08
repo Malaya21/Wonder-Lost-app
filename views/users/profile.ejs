@@ -1,0 +1,173 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="profile-container">
+    <div class="profile-wrapper">
+        <div class="profile-card">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h1 class="text-center mb-2"><%= currUser.username %></h1>
+                <p class="text-center text-muted mb-4">Member since <%= new Date(currUser.createdAt).toLocaleDateString() %></p>
+            </div>
+
+            <!-- Account Settings -->
+            <div class="profile-section">
+                <h2 class="section-title">
+                    <i class="fas fa-cog me-2"></i>Account Settings
+                </h2>
+                
+                <!-- Email Update Form -->
+                <form action="/user/update-email" method="post" class="settings-form">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-envelope me-2"></i>Email Address
+                        </label>
+                        <div class="input-group">
+                            <input type="email" class="form-control" name="email" value="<%= currUser.email %>" required>
+                            <button type="submit" class="btn btn-primary">Update Email</button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Password Update Form -->
+                <form action="/user/update-password" method="post" class="settings-form mt-4">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-lock me-2"></i>Change Password
+                        </label>
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control" name="currentPassword" placeholder="Current Password" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control" name="newPassword" placeholder="New Password" required>
+                        </div>
+                        <div class="input-group">
+                            <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm New Password" required>
+                            <button type="submit" class="btn btn-primary">Update Password</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-container {
+        min-height: 100vh;
+        padding: 2rem 0;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .profile-wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .profile-card {
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+    }
+
+    .profile-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 1.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .profile-avatar i {
+        font-size: 3rem;
+        color: white;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        color: #2d3748;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .settings-form {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-label i {
+        color: #667eea;
+    }
+
+    .input-group {
+        position: relative;
+    }
+
+    .form-control {
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        border: 2px solid #e2e8f0;
+        background-color: white;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .btn-primary {
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        border-radius: 0.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    @media (max-width: 576px) {
+        .profile-card {
+            padding: 1.5rem;
+        }
+
+        .input-group {
+            flex-direction: column;
+        }
+
+        .btn-primary {
+            margin-top: 1rem;
+            width: 100%;
+        }
+    }
+</style> 

@@ -1,37 +1,221 @@
 <% layout('layouts/boilerplate') %>
-<body>
-    <div class="container mt-3">
-        <h1 class="mb-4 text-center text-warning"><span class="badge text-bg-secondary">Edit Details</span></h1>
-        <form action="/listing?_method=put" method="post" class="shadow p-4 rounded bg-dark  needs-validation" novalidate>
-            <input type="hidden" name="id" value="<%=list._id%>">
-            <div class="mb-3">
-                <label for="title" class="form-label">Title:</label>
-                <input type="text" class="form-control" id="title" name="title" value="<%=list.title%>" required>
-                <div class="invalid-feedback">Please enter a valid title</div>
+
+<div class="edit-container">
+    <div class="edit-wrapper">
+        <div class="edit-card">
+            <div class="edit-header">
+                <h1 class="edit-title">
+                    <i class="fas fa-edit me-2"></i>Edit Listing
+                </h1>
+                <p class="edit-subtitle">Update your listing details below</p>
             </div>
-            <div class="mb-3">
-                <label for="image" class="form-label">Image URL:</label>
-                <input type="text" class="form-control" id="image" name="image" value="<%=list.image%>" required>
-                <div class="invalid-feedback">Please enter a valid Image</div>
-            </div>
-            <div class="mb-3">
-                <label for="price" class="form-label">Price:</label>
-                <input type="number" class="form-control" id="price" name="price" value="<%=list.price%>" required>
-                <div class="invalid-feedback">Please enter a valid price</div>
-            </div>
-            <div class="mb-3">
-                <label for="location" class="form-label">Location:</label>
-                <input type="text" class="form-control" id="location" name="location" value="<%=list.location%>" required>
-                <div class="invalid-feedback">Please enter a valid Location</div>
-            </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Description:</label>
-                <textarea class="form-control" id="description" name="description" rows="4" required><%=list.description%></textarea>
-                <div class="invalid-feedback">Please enter a valid details</div>
-            </div>
-            <div class="text-center m-2">
-                <button type="submit" class="btn btn-outline-success">Update Listing</button>
-            </div>
-        </form>
+
+            <form action="/listing?_method=put" method="post" class="edit-form needs-validation" novalidate>
+                <input type="hidden" name="id" value="<%=list._id%>">
+                
+                <div class="form-group">
+                    <label for="title" class="form-label">
+                        <i class="fas fa-heading me-2"></i>Title
+                    </label>
+                    <input type="text" class="form-control" id="title" name="title" value="<%=list.title%>" required>
+                    <div class="invalid-feedback">Please enter a valid title</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="image" class="form-label">
+                        <i class="fas fa-image me-2"></i>Image URL
+                    </label>
+                    <input type="text" class="form-control" id="image" name="image" value="<%=list.image%>" required>
+                    <div class="invalid-feedback">Please enter a valid image URL</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="price" class="form-label">
+                        <i class="fas fa-indian-rupee-sign me-2"></i>Price
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text">₹</span>
+                        <input type="number" class="form-control" id="price" name="price" value="<%=list.price%>" required>
+                    </div>
+                    <div class="invalid-feedback">Please enter a valid price</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="location" class="form-label">
+                        <i class="fas fa-map-marker-alt me-2"></i>Location
+                    </label>
+                    <input type="text" class="form-control" id="location" name="location" value="<%=list.location%>" required>
+                    <div class="invalid-feedback">Please enter a valid location</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description" class="form-label">
+                        <i class="fas fa-align-left me-2"></i>Description
+                    </label>
+                    <textarea class="form-control" id="description" name="description" rows="4" required><%=list.description%></textarea>
+                    <div class="invalid-feedback">Please enter a valid description</div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Update Listing
+                    </button>
+                    <a href="/listing/<%=list._id%>" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-</body>
+</div>
+
+<style>
+    .edit-container {
+        min-height: 100vh;
+        padding: 2rem 0;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .edit-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .edit-card {
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+    }
+
+    .edit-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .edit-title {
+        font-size: 2rem;
+        color: #2d3748;
+        margin-bottom: 0.5rem;
+    }
+
+    .edit-subtitle {
+        color: #718096;
+        font-size: 1.1rem;
+    }
+
+    .edit-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-label i {
+        color: #667eea;
+    }
+
+    .form-control {
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        border: 2px solid #e2e8f0;
+        background-color: white;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .input-group {
+        position: relative;
+    }
+
+    .input-group-text {
+        background-color: #f8f9fa;
+        border: 2px solid #e2e8f0;
+        color: #4a5568;
+    }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        margin-top: 2rem;
+    }
+
+    .btn-primary {
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        border-radius: 0.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-outline-secondary {
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #e2e8f0;
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 576px) {
+        .edit-card {
+            padding: 1.5rem;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn-primary, .btn-outline-secondary {
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+    // Form validation
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>

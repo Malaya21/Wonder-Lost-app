@@ -1,74 +1,422 @@
 <% layout('layouts/boilerplate') %>
-<body>
-<div class="container m-4 text-center">
 
-   
-    <div class="text-center">
-        <img src="<%=list.image %>" alt="image" class="img-fluid rounded" style="height: 60vh;">
-    </div>
-    <div class="mt-4">
-        <h1 class="text-center text-info"><%=list.title %></h1>
-        <p class="h4">Owner: <%=list.owner.username %></p>
-        <p class="h4">Price: <span class="text-success">&#8377;<%=list.price %></span></p>
-        <p class="h5">Description: <%=list.description %></p>
-    </div>
-  
-    <div class="d-flex justify-content-evenly mt-4">
-        <% if(currUser && list.owner.username === currUser.username){ %>
-        <a href="/listing/<%=list._id%>/edit" class="btn btn-primary">Edit Page</a>
-        <form action="/listing?_method=delete" method="post">
-            <input type="hidden" name="id" value="<%=list._id%>">
-            <button type="submit" class="btn btn-danger">Delete</button>
-        </form>
-        <% } %>
-        <a href="/listing/review/<%=list._id%>" class="btn btn-primary">Add Review</a>
-       
-    </div>
-    <hr>
-    <div class="col-12 ml-5 p-5">
-        <h4 class="text-center">All Reviews </h4>
-        
-        <% if (list.reviews && list.reviews.length > 0) { %>
-            <div class="d-flex flex-wrap">
-            <% list.reviews.forEach(review => { %>
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h3 class="card-subtitle mb-2 text-muted"><%for(i=0;i<5;i++){
-                            if(i<review.rating){
-                                %>
-                                <span class="text-warning"> &#9733;</span>
-                                <%
-                            }else{
-                                %>
-                                <span class="text-muted"> &#9733;</span>
-                                <%  
-                            }
-                        } %> </h3>
-                        <p class="card-text"><%= review.comment %></p>
-                        <p class="card-text">By: <%= review.owner.username %></p>
-                        <p class="card-text">Date: <%= review.createdAt.toLocaleDateString() %></p>
-                        <% if(currUser && review.owner.username === currUser.username){ %>
-                            <div class="d-flex gap-2 justify-content-end">
-                                <a href="/listing/review/<%=review._id%>/edit?listId=<%=list._id%>" class="btn btn-outline-primary btn-sm">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a>
-                                <form action="/listing/review/<%=review._id%>?_method=delete&listId=<%=list._id%>" method="post" class="d-inline">
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">
-                                        <i class="fas fa-trash"></i> Delete
-                                    </button>
-                                </form>
-                            </div>
-                        <% } %>
-                    </div>
-                </div>
-            <% }); %>
+<body>
+  <!-- Main Container -->
+  <div class="container my-1 px-5">
+    <!-- Hero Image Section -->
+    <div class="hero-section">
+      <div class="hero-image">
+        <img
+          src="<%=list.image %>"
+          alt="<%=list.title %>"
+          class="hero-img"
+        />
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <h1 class="hero-title"><%=list.title %></h1>
+          <div class="hero-meta">
+            <div class="meta-item">
+              <i class="fas fa-user"></i>
+              <span><%=list.owner.username %></span>
             </div>
-        <% } else { %>
-            <p>No reviews yet.</p>
-        <% } %>
-        
-            
-        
+            <div class="meta-item">
+              <i class="fas fa-tag"></i>
+              <span>₹<%=list.price %>/night</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+
+    <!-- Content Container -->
+    <div class="container mt-4">
+      <div class="row">
+        <!-- Description Section -->
+        <div class="col-md-8 mx-auto mb-5">
+          <div class="description-section">
+            <h3 class="text-primary mb-3 d-flex align-items-center">
+              <i class="fas fa-info-circle me-2"></i>
+              Description
+            </h3>
+            <div class="description-content">
+              <p class="lead mb-0 text-justify"><%=list.description %></p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-center gap-3 mt-4">
+              <% if(currUser && list.owner.username===currUser.username){ %>
+              <a
+                href="/listing/<%=list._id%>/edit"
+                class="btn btn-outline-primary"
+              >
+                <i class="fas fa-edit"></i> Edit Listing
+              </a>
+              <form
+                action="/listing?_method=delete"
+                method="post"
+                class="d-inline"
+              >
+                <input type="hidden" name="id" value="<%=list._id%>" />
+                <button type="submit" class="btn btn-outline-danger">
+                  <i class="fas fa-trash"></i> Delete
+                </button>
+              </form>
+              <% } %>
+              <a
+                href="/listing/review/<%=list._id%>"
+                class="btn btn-outline-success"
+              >
+                <i class="fas fa-comment"></i> Add Review
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="col-12">
+          <div class="reviews-container">
+            <h3 class="text-center mb-4">
+              <i class="fas fa-star text-warning me-2"></i>
+              Reviews
+              <span class="badge bg-primary ms-2">
+                <%= list.reviews ? list.reviews.length : 0 %>
+              </span>
+            </h3>
+
+            <% if (list.reviews && list.reviews.length> 0) { %>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+              <% list.reviews.forEach(review=> { %>
+              <div class="col">
+                <div class="review-card">
+                  <div class="review-header">
+                    <div class="rating">
+                      <%for(i=0;i<5;i++){ %>
+                      <span class="<%= i<review.rating ? 'text-warning' : 'text-muted' %>">
+                        <i class="fas fa-star"></i>
+                      </span>
+                      <% } %>
+                    </div>
+                    <small class="review-date">
+                      <i class="far fa-calendar"></i>
+                      <%= review.createdAt.toLocaleDateString() %>
+                    </small>
+                  </div>
+                  <div class="review-content">
+                    <p class="review-text"><%= review.comment %></p>
+                  </div>
+                  <div class="review-footer">
+                    <div class="reviewer">
+                      <i class="fas fa-user"></i>
+                      <%= review.owner.username %>
+                    </div>
+                    <% if(currUser && review.owner.username===currUser.username){ %>
+                    <div class="review-actions">
+                      <a href="/listing/review/<%=review._id%>/edit?listId=<%=list._id%>" 
+                         class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                      <form action="/listing/review/<%=review._id%>?_method=delete&listId=<%=list._id%>" 
+                            method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </form>
+                    </div>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+              <% }); %>
+            </div>
+            <% } else { %>
+            <div class="no-reviews">
+              <i class="fas fa-comment-slash"></i>
+              <p>No reviews yet. Be the first to review!</p>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Hero Section Styles */
+    .hero-section {
+        position: relative;
+        height: 70vh;
+        overflow: hidden;
+        border-radius: 1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+
+    .hero-image {
+        position: relative;
+        height: 100%;
+        width: 100%;
+    }
+
+    .hero-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .hero-section:hover .hero-img {
+        transform: scale(1.05);
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.2),
+            rgba(0, 0, 0, 0.7)
+        );
+    }
+
+    .hero-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 3rem;
+        color: white;
+        z-index: 1;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        line-height: 1.2;
+    }
+
+    .hero-meta {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.25rem;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.75rem 1.25rem;
+        border-radius: 0.5rem;
+        backdrop-filter: blur(5px);
+    }
+
+    .meta-item i {
+        color: #f6ad55;
+    }
+
+    @media (max-width: 768px) {
+        .hero-section {
+            height: 50vh;
+        }
+
+        .hero-content {
+            padding: 2rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .hero-meta {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .meta-item {
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+        }
+    }
+
+    /* Description Section Styling */
+    .description-section {
+      padding: 2rem;
+      background-color: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .description-content {
+      padding: 1.5rem;
+      background-color: #f8f9fa;
+      border-radius: 0.5rem;
+      margin-top: 1rem;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .description-content p {
+      line-height: 1.8;
+      margin-bottom: 0;
+      color: #333;
+    }
+
+    /* Image Section Responsive */
+    @media (max-width: 576px) {
+      .position-relative {
+        height: 50vh;
+      }
+    }
+
+    @media (min-width: 577px) and (max-width: 768px) {
+      .position-relative {
+        height: 60vh;
+      }
+    }
+
+    /* Review Card Styling */
+    .card {
+      border: none;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+      padding: 2rem;
+    }
+
+    /* Review Card Hover Effect */
+    .reviews-section .card {
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .reviews-section .card:hover {
+      transform: translateY(-5px);
+    }
+
+    /* Button Styling */
+    .btn {
+      padding: 0.5rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Rating Stars */
+    .rating {
+      font-size: 1.2rem;
+    }
+
+    /* Review Card Content */
+    .card-text {
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* Reviews Section Styling */
+    .reviews-container {
+      padding: 2rem;
+      background-color: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .review-card {
+      background: #fff;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      height: 100%;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .review-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .review-date {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+
+    .review-content {
+      margin-bottom: 1rem;
+    }
+
+    .review-text {
+      color: #333;
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+
+    .review-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .reviewer {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+
+    .review-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .no-reviews {
+      text-align: center;
+      padding: 3rem;
+      color: #6c757d;
+    }
+
+    .no-reviews i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #dee2e6;
+    }
+
+    .no-reviews p {
+      font-size: 1.1rem;
+      margin-bottom: 0;
+    }
+
+    /* Responsive adjustments for reviews */
+    @media (max-width: 768px) {
+      .reviews-container {
+        padding: 1rem;
+      }
+      
+      .review-card {
+        padding: 1rem;
+      }
+      
+      .rating {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </body>
